@@ -1,0 +1,69 @@
+{% load bootstrap3 %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block bootstrap3_content %}
+<title>Movie Recommendation Website - SV</title>
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+    $( function() {
+      var availableTags = [
+      {% for movie in search_movie %}
+          "{{ movie.name }}",
+      {% endfor %}
+    ];
+      $( "#tags" ).autocomplete({
+        source: availableTags
+      });
+    } );
+</script>
+
+<div class="container">
+    <nav class="navbar navbar-inverse">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{% url 'reviews:review_list' %}">{% bootstrap_icon "home" %} Movie Recommendation Website</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+
+            <ul class="nav navbar-nav">
+                <li><a href="{% url 'reviews:movie_list' %}">{% bootstrap_icon "film" %} Movies</a></li>
+            </ul>
+
+             <form action="{% url 'reviews:movie_list' %}" method="get" class="navbar-form navbar-left" role="search">
+                <div class="input-group">
+                    <input type="text" id="tags" name="search" placeholder="Search" class="form-control" />
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default" value="Search"> {% bootstrap_icon "search" %} .</button>
+                    </span>
+                </div>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'reviews:user_review_list' user.username %}">Hello {{ user.username }}</a></li>
+                <li><a href="{% url 'reviews:user_recommendation_list' %}">{% bootstrap_icon "fire" %} Movie suggestions</a></li>
+                <li><a href="{% url 'auth:logout' %}">Logout</a></li>
+                {% else %}
+                <li><a href="{% url 'auth:login' %}">{% bootstrap_icon "user" %} Login</a></li>
+                <li><a href="/accounts/register">{% bootstrap_icon "user" %} Register</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+
+    <h1>{% block title %}(no title){% endblock %}</h1>
+
+    {% bootstrap_messages %}
+
+    {% block content %}(no content){% endblock %}
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,8 @@
+- Recommendations.py	: Programming Collective Intelligence (Aug 2007), book by O'Reilly - Chap 1 & 2
+	Cmd-line ML algos in Python to return recommendations and similar users
+
+- Winerama		: https://www.codementor.io/jadianes/tutorials/get-started-with-django-building-recommendation-review-app-du107yb1a (3-part series)
+	Website using Python/Django, HTML/CSS/Bootstrap, KMeans (ML) algo, to return recommendations and similar users, and equipped with Login and Registration features
+
+- GitHub API		: http://drksephy.github.io/2015/07/16/django/
+	Website using Python/Django, HTML/CSS/Bootstrap, to return a different (requested) user's details

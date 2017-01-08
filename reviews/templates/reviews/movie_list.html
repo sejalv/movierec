@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<h2><i>Movie list</i></h2>
+{% endblock %}
+
+{% block content %}
+{% if movie_list %}
+<div class="row">
+    {% for movie in movie_list %}
+    <div class="col-xs-6 col-lg-4">
+        <div class="panel panel-default">
+    <div class="panel-body">
+        <h4><a href="{% url 'reviews:movie_detail' movie.id %}">
+        {{ movie.name }}
+        </a></h4>
+        <h5>{{ movie.review_set.count }} reviews</h5>
+        <h5>{{ movie.average_rating | floatformat }} average rating</h5>
+    </div></div></div>
+    {% endfor %}
+</div>
+{% else %}
+    <p>No movies are available.</p>
+{% endif %}
+{% endblock %}

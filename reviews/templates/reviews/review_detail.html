@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% block title %}
+<h2><i>Review for <a href="{% url 'reviews:movie_detail' review.movie.id %}">{{ review.movie.name }}</a> </i></h2>
+{% endblock %}
+
+{% block content %}
+<br>
+<div class="panel panel-default">
+    <div class="panel-body">
+    <h4>Rated {{ review.rating }} of 5 by <a href="{% url 'reviews:user_review_list' review.user_name %}" > {% bootstrap_icon "user" %} {{ review.user_name }}</a></h4>
+    <h4><small><i>{{ review.pub_date }}</i></small></h4>
+    <p>{{ review.comment }}</p>
+</div></div>
+
+{% if review.user_name_id == user.username %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#myTooltips a").tooltip({
+        title : 'What's your rating?'
+    });
+});
+
+$(function(){
+var elementTitle = "";
+    $('.rating-select .btn').on('mouseover', function(){
+        $(this).removeClass('btn-default').addClass('btn-warning');
+        $(this).prevAll().removeClass('btn-default').addClass('btn-warning');
+        $(this).nextAll().removeClass('btn-warning').addClass('btn-default');
+    });
+
+    $('.rating-select').on('mouseleave', function(){
+        active = $(this).parent().find('.selected');
+        if(active.length) {
+            active.removeClass('btn-default').addClass('btn-warning');
+            active.prevAll().removeClass('btn-default').addClass('btn-warning');
+            active.nextAll().removeClass('btn-warning').addClass('btn-default');
+        } else {
+            $(this).find('.btn').removeClass('btn-warning').addClass('btn-default');
+        }
+    });
+
+    $('.rating-select .btn').click(function(){
+        if($(this).hasClass('selected')) {
+            $('.rating-select .selected').removeClass('selected');
+        } else {
+            $('.rating-select .selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+        elementTitle = $(this).val();
+    });
+
+    $('#sbmtBtn').click(function () {
+        $(this).val(elementTitle);
+    });
+});
+</script>
+<br>
+<h3><i>Edit your review</i></h3>
+        {% if error_message %}<p><strong>Please select a rating ! </strong></p>{% endif %}
+        <form action="{% url 'reviews:edit_review' review.id %}" method="post" class="form">
+            {% csrf_token %}
+            {% bootstrap_form form layout='inline' %}
+            <h4><b>Rating</b></h4>
+            <div class="rating-select">
+                <button type="button" id="btn1" name="action" value="1" class="btn btn-default btn-xs" data-toggle="tooltip" title="1"><span class="glyphicon glyphicon-star-empty"></span></button>
+                <button type="button" id="btn2" name="action" value="1.5" class="btn btn-default btn-xs" data-toggle="tooltip" title="1.5"><span class="glyphicon glyphicon-star-empty"></span></button>
+                <button type="button" id="btn3" name="action" value="2" class="btn btn-default btn-xs" data-toggle="tooltip" title="2"><span class="glyphicon glyphicon-star-empty"></span></button>
+                <button type="button" id="btn4" name="action" value="2.5" class="btn btn-default btn-xs" data-toggle="tooltip" title="2.5"><span class="glyphicon glyphicon-star-empty"></span></button>
+                <button type="button" id="btn5" name="action" value="3" class="btn btn-default btn-xs" data-toggle="tooltip" title="3"><span class="glyphicon glyphicon-star-empty"></span></button>
+                <button type="button" id="btn6" name="action" value="3.5" class="btn btn-default btn-xs" data-toggle="tooltip" title="3.5"><span class="glyphicon glyphicon-star-empty"></span></button>
+                <button type="button" id="btn7" name="action" value="4" class="btn btn-default btn-xs" data-toggle="tooltip" title="4"><span class="glyphicon glyphicon-star-empty"></span></button>
+                <button type="button" id="btn8" name="action" value="4.5" class="btn btn-default btn-xs" data-toggle="tooltip" title="4.5"><span class="glyphicon glyphicon-star-empty"></span></button>
+                <button type="button" id="btn9" name="action" value="5" class="btn btn-default btn-xs" data-toggle="tooltip" title="5"><span class="glyphicon glyphicon-star-empty"></span></button>
+            </div>
+            <br>
+            {% buttons %}
+            <button type="submit" id="sbmtBtn" class="btn btn-primary" name="sbmtBtn" value="">
+                {% bootstrap_icon "pencil" %} Save Edits
+            </button>
+            {% endbuttons %}
+        </form>
+
+<h3><i>Delete your review</i></h3>
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        <form action="{% url 'reviews:delete_review_conf' review.id %}" class="form">
+            {% csrf_token %}
+            {% buttons %}
+            <button type="submit" class="btn btn-primary">
+                {% bootstrap_icon "trash" %} Delete
+            </button>
+            {% endbuttons %}
+        </form>
+
+{% endif %}
+
+{% endblock %}

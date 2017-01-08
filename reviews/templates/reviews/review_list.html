@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% block title %}
+<h2>Latest reviews</h2>
+{% endblock %}
+
+{% block content %}
+
+{% if latest_review_list %}
+<div class="row">
+    {% for review in latest_review_list %}
+    <div class="col-xs-6 col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">{% bootstrap_icon "pushpin" %}</div>
+    <div class="panel-body">
+        <h4> <a href="{% url 'reviews:movie_detail' review.movie.id %}"> {{ review.movie.name }} </a> </h4>
+        <h5>Rated <b> <a href="{% url 'reviews:review_detail' review.id %}"> {{ review.rating }}</a> </b> of 5 by <a href="{% url 'reviews:user_review_list' review.user_name %}" >{{ review.user_name }}</a></h5>
+        <h5>{{ review.comment }}</h5>
+        {% if review.user_name_id == user.username %}
+            <div>
+                <div style="float: left; width: 40%"> <h6> <a href="{% url 'reviews:review_detail' review.id %}"> Edit </a> </h6> </div>
+                <div style="float: right; width: 60%"> <h6> <a href="{% url 'reviews:delete_review_conf' review.id %}"> Delete </a> </h6> </div>
+            </div>
+        {% endif %}
+    </div></div></div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No reviews are available.</p>
+
+{% endif %}
+{% endblock %}
