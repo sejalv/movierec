@@ -88,11 +88,17 @@ WSGI_APPLICATION = 'movierec.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        #'ENGINE': 'django.db.backends.postgresql_psycopg2'
+        'ENGINE': 'django.db.backends.postgresql',
+        #'NAME': 'HEROKU_POSTGRESQL_IVORY_URL'
+
     }
 }
-
+'''
+DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))}
+'''
 # Update database configuration with $DATABASE_URL.
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
