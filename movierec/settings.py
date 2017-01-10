@@ -25,9 +25,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'nx0$$@f+7i3*0av$q*(tgc*c6kp_75#%k29jcj0=eg4_xl4#9r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False #True
 
-ALLOWED_HOSTS = []
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+ALLOWED_HOSTS = ['*']
+#ALLOWED_HOSTS = ['movierec-sv.herokuapp.com']
+
 
 
 # Application definition
@@ -39,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',
     'bootstrap3',
     'reviews',
     'registration',
@@ -49,10 +54,12 @@ REGISTRATION_AUTO_LOGIN = True # Automatically log the user in.
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -88,16 +95,17 @@ WSGI_APPLICATION = 'movierec.wsgi.application'
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         #'ENGINE': 'django.db.backends.postgresql_psycopg2'
-        'ENGINE': 'django.db.backends.postgresql',
+        #'ENGINE': 'django.db.backends.postgresql',
         #'NAME': 'HEROKU_POSTGRESQL_IVORY_URL'
 
     }
 }
 '''
-DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))}
+DATABASES = {'default': dj_database_url.config(default=os.environ.get('postgres://udpdfjqyoamegw:631cc8d2d9ee4b823eeeaad78173d2b336672c0fa368abeed5be8b325d92caf8@ec2-23-21-238-246.compute-1.amazonaws.com:5432/d7aujj4gj4pt9i'))}
+
 '''
 # Update database configuration with $DATABASE_URL.
 db_from_env = dj_database_url.config(conn_max_age=500)
