@@ -15,7 +15,7 @@ import datetime
 
 
 def review_list(request):
-    latest_review_list = Review.objects.order_by('-pub_date')[:9]
+    latest_review_list = Review.objects.order_by('-pub_date')[:8]
     context = {'latest_review_list':latest_review_list}
     return render(request, 'reviews/review_list.html', context)
 
@@ -35,7 +35,7 @@ def movie_list(request):
         if p=='name':
             movie_list = Movie.objects.order_by('name')
         elif p=='latest':
-            movie_list = Movie.objects.order_by('duration')
+            movie_list = Movie.objects.order_by('-duration')
         elif p=='review':
             movie_list = sorted(
                 Movie.objects.all(),
@@ -50,7 +50,7 @@ def movie_list(request):
             reverse=True
         )
 
-    paginator = Paginator(movie_list, 150)  # Show 200 movies per page
+    paginator = Paginator(movie_list, 200)  # Show 200 movies per page
     page = request.GET.get('page')
     try:
         movie_list = paginator.page(page)
@@ -168,53 +168,54 @@ def user_recommendation_list(request):
     # get request user reviewed movies
     user=User.objects.get(username=request.user.username)
     user_reviews = Review.objects.filter(user_name=user).prefetch_related('movie')
-    user_reviews_movie_ids = set(map(lambda x: x.movie.id, user_reviews))
+    if user_reviews:
+        user_reviews_movie_ids = set(map(lambda x: x.movie.id, user_reviews))
 
-    # get request user cluster name (just the first one right now)
-    try:
-        user_cluster_name = \
-            User.objects.get(username=request.user.username).cluster_set.first().name
-    except: # if no cluster assigned for a user, update clusters
-        update_clusters()
-        user_cluster_name = \
-            User.objects.get(username=request.user.username).cluster_set.first().name
+        # get request user cluster name (just the first one right now)
+        try:
+            user_cluster_name = \
+                User.objects.get(username=request.user.username).cluster_set.first().name
+        except: # if no cluster assigned for a user, update clusters
+            update_clusters()
+            user_cluster_name = \
+                User.objects.get(username=request.user.username).cluster_set.first().name
 
-    # get usernames for other members of the cluster
-    user_cluster_other_members = \
-        Cluster.objects.get(name=user_cluster_name).users \
-            .exclude(username=request.user.username).all()
+        # get usernames for other members of the cluster
+        user_cluster_other_members = \
+            Cluster.objects.get(name=user_cluster_name).users \
+                .exclude(username=request.user.username).all()
 
-    other_members_usernames = set(map(lambda x: x.username, user_cluster_other_members))
+        other_members_usernames = set(map(lambda x: x.username, user_cluster_other_members))
 
-    # get reviews by those users, excluding movies reviewed by the request user
-    other_users_reviews = \
-        Review.objects.filter(user_name__in=other_members_usernames) \
-            .exclude(movie__id__in=user_reviews_movie_ids)
+        # get reviews by those users, excluding movies reviewed by the request user
+        other_users_reviews = \
+            Review.objects.filter(user_name__in=other_members_usernames) \
+                .exclude(movie__id__in=user_reviews_movie_ids)
 
-    other_users_reviews_movie_ids = set(map(lambda x: x.movie.id, other_users_reviews))
+        other_users_reviews_movie_ids = set(map(lambda x: x.movie.id, other_users_reviews))
 
-    '''
-    # then get a movie list including the previous IDs, order by rating
-    movie_list = sorted(
-        list(Movie.objects.filter(id__in=other_users_reviews_movie_ids)),
-        #Movie.objects.filter(id__in=other_users_reviews_movie_ids),
-        key=lambda x: x.average_rating,
-        reverse=True
-    )
-    '''
-    #print len(other_users_reviews_movie_ids)
-    vals_all = Movie.objects.all()
-    vals_filtered = (item for item in vals_all if item.id in other_users_reviews_movie_ids and item.review_set.count() >= 10)
-    movie_list = sorted(vals_filtered, key=lambda x: x.review_set.count(), reverse=True)[:10]
-    #movie_list = [(v.id, v.name) for v in vals_ordered][:20]
+        '''
+        # then get a movie list including the previous IDs, order by rating
+        movie_list = sorted(
+            list(Movie.objects.filter(id__in=other_users_reviews_movie_ids)),
+            #Movie.objects.filter(id__in=other_users_reviews_movie_ids),
+            key=lambda x: x.average_rating,
+            reverse=True
+        )
+        '''
+        #print len(other_users_reviews_movie_ids)
+        vals_all = Movie.objects.all()
+        vals_filtered = (item for item in vals_all if item.id in other_users_reviews_movie_ids and item.review_set.count() >= 10)
+        movie_list = sorted(vals_filtered, key=lambda x: x.review_set.count(), reverse=True)[:10]
+        #movie_list = [(v.id, v.name) for v in vals_ordered][:20]
 
-    #movie_list = Movie.objects.filter(id__in=other_users_reviews_movie_ids)
-    #print len(movie_list)
-
+        #movie_list = Movie.objects.filter(id__in=other_users_reviews_movie_ids)
+        #print len(movie_list)
+    else:
+        movie_list=None
     return render(
-        request, 
-        'reviews/user_recommendation_list.html', 
+        request,
+        'reviews/user_recommendation_list.html',
         {'username': request.user.username,
-         'movie_list': movie_list}
-    )
-
+        'movie_list': movie_list}
+        )
