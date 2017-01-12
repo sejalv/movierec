@@ -50,7 +50,7 @@ def movie_list(request):
             reverse=True
         )
 
-    paginator = Paginator(movie_list, 200)  # Show 200 movies per page
+    paginator = Paginator(movie_list, 150)  # Show 200 movies per page
     page = request.GET.get('page')
     try:
         movie_list = paginator.page(page)

@@ -13,32 +13,21 @@ from reviews.models import Review, Movie
 
 def save_review_from_row(review_row):
     review = Review()
-    '''
     try:
         review.id = Review.objects.last().pk + 1     #review_row[0]
     except: #TypeError:
         review.id = 1
-    '''
-    try:
-        r=Review.objects.get(id=review_row[0])
-        pass
-    except:
-        try:
-            user=User.objects.get(username=''+str(int(review_row[1])))
-            movie=Movie.objects.get(id=review_row[2])
-            if len(user.username)<4 and user.id%10==0:
-                review.id = review_row[0]
-                review.user_name = user
-                #review.user_name = User.objects.get(id=review_row[1])
-                review.movie = movie
-                review.rating = review_row[3]
-                review.comment = review_row[4]
-                review.pub_date = datetime.datetime.now()
-                # review.pub_date = review_row[5].strip() if review_row[5].strip() else datetime.datetime.now()
-                print 'saving '+review.id
-                review.save()
-        except:
-            pass
+
+    user = User.objects.get(username=''+str(int(review_row[1])))
+    review.user_name = user
+    #review.user_name = User.objects.get(id=review_row[1])
+    review.movie = Movie.objects.get(id=review_row[2])
+    review.rating = review_row[3]
+    review.comment = review_row[4]
+    review.pub_date = datetime.datetime.now()
+    # review.pub_date = review_row[5].strip() if review_row[5].strip() else datetime.datetime.now()
+    print 'saving '+review.id
+    review.save()
     
     
 if __name__ == "__main__":
