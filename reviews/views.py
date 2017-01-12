@@ -100,7 +100,7 @@ def add_review(request, movie_id):
             #review.pub_date = datetime.datetime.now()
             review.pub_date = timezone.now()
             review.save()
-            #update_clusters()
+
             # Always return an HttpResponseRedirect after successfully dealing
             # with POST data. This prevents data from being posted twice if a
             # user hits the Back button.
@@ -132,9 +132,9 @@ def edit_review(request, review_id): #=None):
     if request.POST and form.is_valid():
         try:
             review.rating = request.POST.get('sbmtBtn')
+            review.comment = form.cleaned_data['comment']
             review.pub_date = datetime.datetime.now()
-            form.save()
-            #update_clusters()
+            review.save()
             # Save was successful, so redirect to another page # redirect_url = reverse('reviews:movie_detail', args=(movie.id,)))
             return HttpResponseRedirect(reverse('reviews:review_detail', args=(review.id,)))
         except:
@@ -154,7 +154,7 @@ def delete_review(request, review_id):
     if request.POST: #.get("Delete"): #POST.get for button values not working
         # when confirmation page has been displayed and confirm button pressed
         review.delete()
-        #update_clusters()
+
         return HttpResponseRedirect(reverse('reviews:user_review_list'))
     '''
     elif request.POST.get("No"):    #POST.get for button values not working

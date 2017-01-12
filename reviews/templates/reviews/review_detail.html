@@ -22,7 +22,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
     $("#myTooltips a").tooltip({
-        title : 'What's your rating?'
+        title : 'Rating'
     });
 });
 
@@ -62,21 +62,21 @@ var elementTitle = "";
 </script>
 <br>
 <h3><i>Edit your review</i></h3>
-        {% if error_message %}<p><strong>Please select a rating ! </strong></p>{% endif %}
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
         <form action="{% url 'reviews:edit_review' review.id %}" method="post" class="form">
             {% csrf_token %}
             {% bootstrap_form form layout='inline' %}
             <h4><b>Rating</b></h4>
             <div class="rating-select">
-                <button type="button" id="btn1" name="action" value="1" class="btn btn-default btn-xs" data-toggle="tooltip" title="1"><span class="glyphicon glyphicon-star-empty"></span></button>
-                <button type="button" id="btn2" name="action" value="1.5" class="btn btn-default btn-xs" data-toggle="tooltip" title="1.5"><span class="glyphicon glyphicon-star-empty"></span></button>
-                <button type="button" id="btn3" name="action" value="2" class="btn btn-default btn-xs" data-toggle="tooltip" title="2"><span class="glyphicon glyphicon-star-empty"></span></button>
-                <button type="button" id="btn4" name="action" value="2.5" class="btn btn-default btn-xs" data-toggle="tooltip" title="2.5"><span class="glyphicon glyphicon-star-empty"></span></button>
-                <button type="button" id="btn5" name="action" value="3" class="btn btn-default btn-xs" data-toggle="tooltip" title="3"><span class="glyphicon glyphicon-star-empty"></span></button>
-                <button type="button" id="btn6" name="action" value="3.5" class="btn btn-default btn-xs" data-toggle="tooltip" title="3.5"><span class="glyphicon glyphicon-star-empty"></span></button>
-                <button type="button" id="btn7" name="action" value="4" class="btn btn-default btn-xs" data-toggle="tooltip" title="4"><span class="glyphicon glyphicon-star-empty"></span></button>
-                <button type="button" id="btn8" name="action" value="4.5" class="btn btn-default btn-xs" data-toggle="tooltip" title="4.5"><span class="glyphicon glyphicon-star-empty"></span></button>
-                <button type="button" id="btn9" name="action" value="5" class="btn btn-default btn-xs" data-toggle="tooltip" title="5"><span class="glyphicon glyphicon-star-empty"></span></button>
+                <button type="button" id="btn1" name="action" value="1" class="btn btn-default btn-xs" data-toggle="tooltip" title="1">{% bootstrap_icon "star-empty" %}</button>
+                <button type="button" id="btn2" name="action" value="1.5" class="btn btn-default btn-xs" data-toggle="tooltip" title="1.5">{% bootstrap_icon "star-empty" %}</button>
+                <button type="button" id="btn3" name="action" value="2" class="btn btn-default btn-xs" data-toggle="tooltip" title="2">{% bootstrap_icon "star-empty" %}</button>
+                <button type="button" id="btn4" name="action" value="2.5" class="btn btn-default btn-xs" data-toggle="tooltip" title="2.5">{% bootstrap_icon "star-empty" %}</button>
+                <button type="button" id="btn5" name="action" value="3" class="btn btn-default btn-xs" data-toggle="tooltip" title="3">{% bootstrap_icon "star-empty" %}</button>
+                <button type="button" id="btn6" name="action" value="3.5" class="btn btn-default btn-xs" data-toggle="tooltip" title="3.5">{% bootstrap_icon "star-empty" %}</button>
+                <button type="button" id="btn7" name="action" value="4" class="btn btn-default btn-xs" data-toggle="tooltip" title="4">{% bootstrap_icon "star-empty" %}</button>
+                <button type="button" id="btn8" name="action" value="4.5" class="btn btn-default btn-xs" data-toggle="tooltip" title="4.5">{% bootstrap_icon "star-empty" %}</button>
+                <button type="button" id="btn9" name="action" value="5" class="btn btn-default btn-xs" data-toggle="tooltip" title="5">{% bootstrap_icon "star-empty" %}</button>
             </div>
             <br>
             {% buttons %}
