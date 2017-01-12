@@ -30,18 +30,20 @@ def movie_list(request):
         #movie_id = request.GET['search']
         movie_list = Movie.objects.filter(name__icontains=request.GET['search'])
     else:
-        #movie_list = Movie.objects.order_by('name')
+        movie_list = Movie.objects.order_by('name')
+        '''
         movie_list = sorted(
             Movie.objects.all(),
             #key=lambda x: x.average_rating,
             key=lambda x: x.review_set.count(),
             reverse=True
         )
+        '''
     context = {'movie_list':movie_list}
     return render(request, 'reviews/movie_list.html', context)
 
 '''
-    # github api - json res
+    # api - json res
     req = requests.get('http://www.omdbapi.com/?i=tt1285016')
     content = req.text
     return HttpResponse(content)
@@ -183,7 +185,7 @@ def user_recommendation_list(request):
     #print len(other_users_reviews_movie_ids)
     vals_all = Movie.objects.all()
     vals_filtered = (item for item in vals_all if item.id in other_users_reviews_movie_ids and item.review_set.count() >= 10)
-    movie_list = sorted(vals_filtered, key=lambda x: x.review_set.count(), reverse=True)[:20]
+    movie_list = sorted(vals_filtered, key=lambda x: x.review_set.count(), reverse=True)[:10]
     #movie_list = [(v.id, v.name) for v in vals_ordered][:20]
 
     #movie_list = Movie.objects.filter(id__in=other_users_reviews_movie_ids)

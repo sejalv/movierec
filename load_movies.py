@@ -8,8 +8,9 @@ django.setup()
 
 from reviews.models import Movie, Genre
 
-
 def save_movie_from_row(movie_row):
+    movie_dur=movie_row[1][movie_row[1].rfind("(") + 1:movie_row[1].rfind(")")].strip()
+    #if len(movie_dur)==4 and movie_dur>=2000:
     movie = Movie()
     '''
     try:
@@ -20,22 +21,21 @@ def save_movie_from_row(movie_row):
     movie.id = movie_row[0]
     movie.name = movie_row[1].strip()
     #movie.year = movie.name[-5:-1]
-    try:
-        movie.duration = movie.name[movie.name.rfind("(") + 1:movie.name.rfind(")")].strip()
-    except movie.name.rfind("(") == -1 and movie.name.rfind(")") == -1:
-        movie.duration = None
+    #if len(movie_dur)==4:
+    movie.duration = movie_dur #movie.name[movie.name.rfind("(") + 1:movie.name.rfind(")")].strip()
+    #else: #movie.name.rfind("(") == -1 and movie.name.rfind(")") == -1:
+     #   movie.duration = ''
     movie.save()
     #movie.duration = .strip("!@#$%^&*()[]{};:,./<>?\|`~-=_+")
 
-    movie_genres = [x.strip() for x in movie_row[2].split("|")]
-    movie.genres.add(*Genre.objects.filter(name__in=movie_genres))  # [i]))
+   # movie_genres = [x.strip() for x in movie_row[2].split("|")]
+   # movie.genres.add(*Genre.objects.filter(name__in=movie_genres))  # [i]))
     '''
-    for g in movie_genres:
+        for g in movie_genres:
         movie.genres.add(Genre.objects.get(name=g)) #[i]))
     '''
-    movie.save()
-    
-    
+    #movie.save()
+
 if __name__ == "__main__":
     
     if len(sys.argv) == 2:

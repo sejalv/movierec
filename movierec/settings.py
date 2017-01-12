@@ -32,8 +32,6 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ALLOWED_HOSTS = ['*']
 #ALLOWED_HOSTS = ['movierec-sv.herokuapp.com']
 
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -99,14 +97,11 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         #'ENGINE': 'django.db.backends.postgresql_psycopg2'
         #'ENGINE': 'django.db.backends.postgresql',
-        #'NAME': 'HEROKU_POSTGRESQL_IVORY_URL'
+        #'NAME': 'DATABASE_URL'
 
     }
 }
-'''
-DATABASES = {'default': dj_database_url.config(default=os.environ.get('postgres://udpdfjqyoamegw:631cc8d2d9ee4b823eeeaad78173d2b336672c0fa368abeed5be8b325d92caf8@ec2-23-21-238-246.compute-1.amazonaws.com:5432/d7aujj4gj4pt9i'))}
 
-'''
 # Update database configuration with $DATABASE_URL.
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)

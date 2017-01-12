@@ -17,10 +17,7 @@ def save_review_from_row(review_row):
         review.id = Review.objects.last().pk + 1     #review_row[0]
     except: #TypeError:
         review.id = 1
-   # print review_row[1]
-   # print str(review_row[1])
-   # print str(int(review_row[1]))
-   # print "%10.0f" % review_row[1]
+
     user = User.objects.get(username=''+str(int(review_row[1])))
     review.user_name = user
     #review.user_name = User.objects.get(id=review_row[1])
@@ -29,6 +26,7 @@ def save_review_from_row(review_row):
     review.comment = review_row[4]
     review.pub_date = datetime.datetime.now()
     # review.pub_date = review_row[5].strip() if review_row[5].strip() else datetime.datetime.now()
+    print 'saving '+review.id
     review.save()
     
     
