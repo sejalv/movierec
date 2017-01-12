@@ -19,9 +19,10 @@ def save_review_from_row(review_row):
     except: #TypeError:
         review.id = 1
     '''
-    if Review.objects.get(id=review_row[0]):
+    try:
+        r=Review.objects.get(id=review_row[0])
         pass
-    else:
+    except:
         try:
             user=User.objects.get(username=''+str(int(review_row[1])))
             movie=Movie.objects.get(id=review_row[2])
