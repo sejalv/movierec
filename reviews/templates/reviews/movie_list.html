@@ -7,29 +7,40 @@
 {% block content %}
 {% if movie_list %}
 
-<div class="pagination">
-    <span class="step-links">
-        {% if movie_list.has_previous %}
-            <a href="?page={{ movie_list.previous_page_number }}">Previous</a>
-        {% endif %}
+{% if movie_list.has_other_pages %}
+  <ul class="pagination">
+    {% if movie_list.has_previous %}
+      <li><a href="?page={{ movie_list.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in movie_list.paginator.page_range %}
+      {% if movie_list.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if movie_list.has_next %}
+      <li><a href="?page={{ movie_list.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+      <li><span> </span></li>
+      <li><span> Sort By: </span></li>
+      <li> <a href="?sort=name"> Name </a> </li>
+      <li> <a href="?sort=latest"> Latest </a> </li>
+      <li> <a href="?sort=review"> Reviews </a> </li>
+  </ul>
 
-        <span class="current">
-            Page {{ movie_list.number }} of {{ movie_list.paginator.num_pages }} ...
-        </span>
-        {% if movie_list.has_next %}
-            <a href="?page={{ movie_list.next_page_number }}"> Next </a>
-        {% endif %}
-    </span>
-</div>
+{% endif %}
 
 <div class="row">
     {% for movie in movie_list %}
     <div class="col-xs-6 col-lg-4">
         <div class="panel panel-default">
     <div class="panel-body">
-        <h4><a href="{% url 'reviews:movie_detail' movie.id %}">
-        {{ movie.name }}
-        </a></h4>
+        <h4><a href="{% url 'reviews:movie_detail' movie.id %}"> {{ movie.name }} </a></h4>
         <h5>{{ movie.review_set.count }} reviews</h5>
         <h5>{{ movie.average_rating | floatformat }} average rating</h5>
     </div></div></div>

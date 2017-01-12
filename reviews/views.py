@@ -30,10 +30,27 @@ def movie_list(request):
     if request.GET.get('search'):
         #movie_id = request.GET['search']
         movie_list = Movie.objects.filter(name__icontains=request.GET['search'])
+    elif request.GET.get('sort'):
+        p=request.GET.get('sort')
+        if p=='name':
+            movie_list = Movie.objects.order_by('name')
+        elif p=='latest':
+            movie_list = Movie.objects.order_by('duration')
+        elif p=='review':
+            movie_list = sorted(
+                Movie.objects.all(),
+                key=lambda x: x.review_set.count(),
+                reverse=True
+            )
     else:
-        movie_list = Movie.objects.order_by('name')
+        movie_list = sorted(
+            Movie.objects.all(),
+            # key=lambda x: x.average_rating,
+            key=lambda x: x.review_set.count(),
+            reverse=True
+        )
 
-    paginator = Paginator(movie_list, 100)  # Show 100 movies per page
+    paginator = Paginator(movie_list, 200)  # Show 200 movies per page
     page = request.GET.get('page')
     try:
         movie_list = paginator.page(page)
@@ -42,14 +59,6 @@ def movie_list(request):
     except EmptyPage: # If page is out of range (e.g. 9999), deliver last page of results.
         movie_list = paginator.page(paginator.num_pages)
 
-    '''
-       movie_list = sorted(
-       Movie.objects.all(),
-       #key=lambda x: x.average_rating,
-       key=lambda x: x.review_set.count(),
-       reverse=True
-    )
-    '''
     context = {'movie_list':movie_list}
     return render(request, 'reviews/movie_list.html', context)
 
