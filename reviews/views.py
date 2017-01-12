@@ -7,6 +7,7 @@ from .models import Review, Movie, Cluster
 from .forms import ReviewForm
 from .suggestions import update_clusters
 from django.utils import timezone
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 #from django.db.models
 
 import datetime
@@ -26,19 +27,29 @@ def review_detail(request, review_id):
 
 
 def movie_list(request):
-    if request.GET:
+    if request.GET.get('search'):
         #movie_id = request.GET['search']
         movie_list = Movie.objects.filter(name__icontains=request.GET['search'])
     else:
         movie_list = Movie.objects.order_by('name')
-        '''
-        movie_list = sorted(
-            Movie.objects.all(),
-            #key=lambda x: x.average_rating,
-            key=lambda x: x.review_set.count(),
-            reverse=True
-        )
-        '''
+
+    paginator = Paginator(movie_list, 100)  # Show 100 movies per page
+    page = request.GET.get('page')
+    try:
+        movie_list = paginator.page(page)
+    except PageNotAnInteger: # If page is not an integer, deliver first page.
+        movie_list = paginator.page(1)
+    except EmptyPage: # If page is out of range (e.g. 9999), deliver last page of results.
+        movie_list = paginator.page(paginator.num_pages)
+
+    '''
+       movie_list = sorted(
+       Movie.objects.all(),
+       #key=lambda x: x.average_rating,
+       key=lambda x: x.review_set.count(),
+       reverse=True
+    )
+    '''
     context = {'movie_list':movie_list}
     return render(request, 'reviews/movie_list.html', context)
 

@@ -6,6 +6,22 @@
 
 {% block content %}
 {% if movie_list %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if movie_list.has_previous %}
+            <a href="?page={{ movie_list.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ movie_list.number }} of {{ movie_list.paginator.num_pages }} ...
+        </span>
+        {% if movie_list.has_next %}
+            <a href="?page={{ movie_list.next_page_number }}"> Next </a>
+        {% endif %}
+    </span>
+</div>
+
 <div class="row">
     {% for movie in movie_list %}
     <div class="col-xs-6 col-lg-4">
@@ -19,6 +35,22 @@
     </div></div></div>
     {% endfor %}
 </div>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if movie_list.has_previous %}
+            <a href="?page={{ movie_list.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ movie_list.number }} of {{ movie_list.paginator.num_pages }} ...
+        </span>
+        {% if movie_list.has_next %}
+            <a href="?page={{ movie_list.next_page_number }}"> Next </a>
+        {% endif %}
+    </span>
+</div>
+
 {% else %}
     <p>No movies are available.</p>
 {% endif %}
