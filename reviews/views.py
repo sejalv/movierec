@@ -157,7 +157,6 @@ def edit_review(request, review_id): #=None):
 
 
 @login_required
-@requires_csrf_token
 def delete_review(request, review_id):
     review = get_object_or_404(Review, pk=review_id)
     username=User.objects.get(username=request.user.username)
@@ -220,7 +219,7 @@ def user_recommendation_list(request):
         #print len(other_users_reviews_movie_ids)
         vals_all = Movie.objects.all()
         vals_filtered = (item for item in vals_all if item.id in other_users_reviews_movie_ids and item.review_set.count() >= 10)
-        movie_list = sorted(vals_filtered, key=lambda x: x.average_rating, reverse=True)[:8]
+        movie_list = sorted(vals_filtered, key=lambda x: x.average_rating, reverse=True)[:10]
         #movie_list = [(v.id, v.name) for v in vals_ordered][:20]
         #movie_list = Movie.objects.filter(id__in=other_users_reviews_movie_ids)
         #print len(movie_list)

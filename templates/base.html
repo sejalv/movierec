@@ -47,7 +47,7 @@
 
       <ul class="nav navbar-nav">
         <li><a href="{% url 'reviews:movie_list' %}">{% bootstrap_icon "film" %} Movies <span class="sr-only">(current)</span></a></li>
-        <li><a href="{% url 'reviews:review_list' %}">Reviews</a></li>
+        <li><a href="{% url 'reviews:review_list' %}">{% bootstrap_icon "heart" %} Reviews</a></li>
       </ul>
 
              <form action="{% url 'reviews:movie_list' %}" method="get" class="navbar-form navbar-left" role="search">
