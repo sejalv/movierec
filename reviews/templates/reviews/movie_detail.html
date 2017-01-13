@@ -95,7 +95,7 @@ var elementTitle = "";
 <h3><i>Recent reviews</i></h3>
 {% if movie.review_set.all %}
 <div class="row">
-    {% for review in movie.review_set.all %}
+    {% for review in movie.review_set.all|dictsortreversed:"pub_date" %}
     <div class="col-xs-6 col-lg-4">
         <div class="panel panel-default">
             <div class="panel-heading">{% bootstrap_icon "pushpin" %}</div>

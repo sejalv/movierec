@@ -8,6 +8,8 @@ from .forms import ReviewForm
 from .suggestions import update_clusters
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.decorators.csrf import requires_csrf_token
+
 #from django.db.models
 
 import datetime
@@ -20,7 +22,7 @@ def home(request):
         # key=lambda x: x.average_rating,
         key=lambda x: x.review_set.count(),
         reverse=True
-    )[:8]
+    )[:6]
     flg = ['hm']
     context = {'movie_list':movie_list, 'flg':flg}
     return render(request, 'reviews/movie_list.html', context)
@@ -155,6 +157,7 @@ def edit_review(request, review_id): #=None):
 
 
 @login_required
+@requires_csrf_token
 def delete_review(request, review_id):
     review = get_object_or_404(Review, pk=review_id)
     username=User.objects.get(username=request.user.username)
