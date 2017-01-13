@@ -4,7 +4,9 @@ from . import views
 
 urlpatterns = [
     # ex: /
-    url(r'^$', views.review_list, name='review_list'),
+    url(r'^$', views.home, name='home'),
+    # ex: /review
+    url(r'^review$', views.review_list, name='review_list'),
     # ex: /review/5/
     url(r'^review/(?P<review_id>[0-9]+)/$', views.review_detail, name='review_detail'),
     # ex: /movie

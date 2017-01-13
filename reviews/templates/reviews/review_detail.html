@@ -20,14 +20,17 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script type="text/javascript">
+
 $(document).ready(function(){
     $("#myTooltips a").tooltip({
         title : 'Rating'
     });
 });
 
-$(function(){
+$(document).ready(function() {
 var elementTitle = "";
+$( "button[value='{{ review.rating }}']" ).addClass('selected');
+
     $('.rating-select .btn').on('mouseover', function(){
         $(this).removeClass('btn-default').addClass('btn-warning');
         $(this).prevAll().removeClass('btn-default').addClass('btn-warning');
@@ -89,7 +92,6 @@ var elementTitle = "";
 <h3><i>Delete your review</i></h3>
         {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
         <form action="{% url 'reviews:delete_review_conf' review.id %}" class="form">
-            {% csrf_token %}
             {% buttons %}
             <button type="submit" class="btn btn-primary">
                 {% bootstrap_icon "trash" %} Delete

@@ -2,7 +2,7 @@
 {% load bootstrap3 %}
 
 {% block title %}
-        <h2><i>{{ movie.name }}</i></h2>
+<h2><i>{{ movie.name }}</i></h2>
 <h5>{{ movie.review_set.count }} reviews ({{ movie.average_rating | floatformat }} average rating)</h5>
 {% endblock %}
 
@@ -29,7 +29,7 @@ $(document).ready(function(){
     });
 });
 
-$(function(){
+$(document).ready(function() {
 var elementTitle = "";
     $('.rating-select .btn').on('mouseover', function(){
         $(this).removeClass('btn-default').addClass('btn-warning');

@@ -5,15 +5,18 @@
 
 {% block bootstrap3_content %}
 <title>Movie Recommendation Website - SV</title>
-<meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <script>
-    $( function() {
+    $(document).ready(function() {
       var availableTags = [
       {% for movie in search_movie %}
           "{{ movie.name }}",
@@ -27,14 +30,25 @@
 
 <div class="container">
     <nav class="navbar navbar-inverse">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="{% url 'reviews:review_list' %}">{% bootstrap_icon "home" %} Movie Recommendation Website</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
+        <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{% url 'reviews:home' %}">{% bootstrap_icon "home" %} Movie Recommendation Website</a>
+    </div>
 
-            <ul class="nav navbar-nav">
-                <li><a href="{% url 'reviews:movie_list' %}">{% bootstrap_icon "film" %} Movies</a></li>
-            </ul>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+      <ul class="nav navbar-nav">
+        <li><a href="{% url 'reviews:movie_list' %}">{% bootstrap_icon "film" %} Movies <span class="sr-only">(current)</span></a></li>
+        <li><a href="{% url 'reviews:review_list' %}">Reviews</a></li>
+      </ul>
 
              <form action="{% url 'reviews:movie_list' %}" method="get" class="navbar-form navbar-left" role="search">
                 <div class="input-group">
@@ -44,18 +58,31 @@
                     </span>
                 </div>
             </form>
+
             <ul class="nav navbar-nav navbar-right">
-            {% if user.is_authenticated %}
-                <li><a href="{% url 'reviews:user_review_list' user.username %}">Hello {{ user.username }}</a></li>
+        {% if user.is_authenticated %}
+          <li class="active dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello {{ user.username }} <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                  <li><a href="{% url 'reviews:user_review_list' user.username %}">My Reviews</a></li>
+                  <li><a href="{% url 'auth:logout' %}">Logout</a></li>
+              </ul></li>
                 <li><a href="{% url 'reviews:user_recommendation_list' %}">{% bootstrap_icon "fire" %} Movie suggestions</a></li>
-                <li><a href="{% url 'auth:logout' %}">Logout</a></li>
+
                 {% else %}
-                <li><a href="{% url 'auth:login' %}">{% bootstrap_icon "user" %} Login</a></li>
-                <li><a href="/accounts/register">{% bootstrap_icon "user" %} Register</a></li>
-                {% endif %}
-            </ul>
-        </div>
+                <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{% bootstrap_icon "user" %} Sign In <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                <li><a href="{% url 'auth:login' %}"> Login</a></li>
+                <li><a href="/accounts/register"> Register</a></li>
+                </ul></li>
+          {% endif %}
+      </ul>
+
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
     </nav>
+
 
 
     <h1>{% block title %}(no title){% endblock %}</h1>
@@ -66,4 +93,3 @@
 </div>
 
 {% endblock %}
-

@@ -78,6 +78,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'reviews.processors.search_movie',
+                #'reviews.processors.upd_clusters_flag',
             ],
         },
     },

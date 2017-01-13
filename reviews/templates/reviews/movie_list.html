@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}
+{% if flg %}
+<h2><i>Top Movies</i></h2>
+{% else %}
 <h2><i>Movie list</i></h2>
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -26,10 +30,10 @@
     {% else %}
       <li class="disabled"><span>&raquo;</span></li>
     {% endif %}
-      <li><span> </span></li>
+      <li role="separator" class="divider"><span> </span></li>
       <li><span> Sort By: </span></li>
       <li> <a href="?sort=name"> Name </a> </li>
-      <li> <a href="?sort=latest"> Latest </a> </li>
+      <li> <a href="?sort=year"> Year </a> </li>
       <li> <a href="?sort=review"> Reviews </a> </li>
   </ul>
 
@@ -47,6 +51,7 @@
     {% endfor %}
 </div>
 
+{% if movie_list.has_other_pages %}
 <div class="pagination">
     <span class="step-links">
         {% if movie_list.has_previous %}
@@ -61,6 +66,7 @@
         {% endif %}
     </span>
 </div>
+{% endif %}
 
 {% else %}
     <p>No movies are available.</p>

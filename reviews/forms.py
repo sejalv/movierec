@@ -9,7 +9,7 @@ class ReviewForm(ModelForm):
         fields = ['comment']
         widgets = {
          #   'rating': TextInput(attrs={'class':"star"}),
-            'comment': Textarea(attrs={'cols': 10, 'rows': 3}),
+            'comment': Textarea(attrs={'cols': 10, 'rows': 2}),
         }
 '''
 class ReviewMovieForm(ModelForm):

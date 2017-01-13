@@ -13,6 +13,18 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import datetime
 # import requests, json, sys    # new
 
+def home(request):
+    #latest_review_list = Review.objects.order_by('-pub_date')[:8]
+    movie_list = sorted(
+        Movie.objects.all(),
+        # key=lambda x: x.average_rating,
+        key=lambda x: x.review_set.count(),
+        reverse=True
+    )[:8]
+    flg = ['hm']
+    context = {'movie_list':movie_list, 'flg':flg}
+    return render(request, 'reviews/movie_list.html', context)
+
 
 def review_list(request):
     latest_review_list = Review.objects.order_by('-pub_date')[:8]
@@ -22,7 +34,10 @@ def review_list(request):
 
 def review_detail(request, review_id):
     review = get_object_or_404(Review, pk=review_id)
-    form = ReviewForm()
+    if review:
+        form = ReviewForm(request.POST or None, instance=review)
+    else:
+        form = ReviewForm()
     return render(request, 'reviews/review_detail.html', {'review': review, 'form': form})
 
 
@@ -34,7 +49,7 @@ def movie_list(request):
         p=request.GET.get('sort')
         if p=='name':
             movie_list = Movie.objects.order_by('name')
-        elif p=='latest':
+        elif p=='year':
             movie_list = Movie.objects.order_by('-duration')
         elif p=='review':
             movie_list = sorted(
@@ -43,12 +58,7 @@ def movie_list(request):
                 reverse=True
             )
     else:
-        movie_list = sorted(
-            Movie.objects.all(),
-            # key=lambda x: x.average_rating,
-            key=lambda x: x.review_set.count(),
-            reverse=True
-        )
+        movie_list = Movie.objects.order_by('-duration')
 
     paginator = Paginator(movie_list, 200)  # Show 200 movies per page
     page = request.GET.get('page')
@@ -59,7 +69,8 @@ def movie_list(request):
     except EmptyPage: # If page is out of range (e.g. 9999), deliver last page of results.
         movie_list = paginator.page(paginator.num_pages)
 
-    context = {'movie_list':movie_list}
+    flg = []
+    context = {'movie_list': movie_list, 'flg': flg}
     return render(request, 'reviews/movie_list.html', context)
 
 '''
@@ -100,7 +111,7 @@ def add_review(request, movie_id):
             #review.pub_date = datetime.datetime.now()
             review.pub_date = timezone.now()
             review.save()
-
+            #update_clusters()
             # Always return an HttpResponseRedirect after successfully dealing
             # with POST data. This prevents data from being posted twice if a
             # user hits the Back button.
@@ -206,9 +217,8 @@ def user_recommendation_list(request):
         #print len(other_users_reviews_movie_ids)
         vals_all = Movie.objects.all()
         vals_filtered = (item for item in vals_all if item.id in other_users_reviews_movie_ids and item.review_set.count() >= 10)
-        movie_list = sorted(vals_filtered, key=lambda x: x.review_set.count(), reverse=True)[:10]
+        movie_list = sorted(vals_filtered, key=lambda x: x.average_rating, reverse=True)[:8]
         #movie_list = [(v.id, v.name) for v in vals_ordered][:20]
-
         #movie_list = Movie.objects.filter(id__in=other_users_reviews_movie_ids)
         #print len(movie_list)
     else:
