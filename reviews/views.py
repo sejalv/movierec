@@ -8,12 +8,13 @@ from .forms import ReviewForm
 from .suggestions import update_clusters
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.decorators.csrf import requires_csrf_token
-
-#from django.db.models
-
+from django.views.generic import TemplateView
 import datetime
 # import requests, json, sys    # new
+#from django.db.models
+
+class DelConf(TemplateView):
+    template_name = "reviews/delete_review_conf.html"
 
 def home(request):
     #latest_review_list = Review.objects.order_by('-pub_date')[:8]
@@ -62,7 +63,7 @@ def movie_list(request):
     else:
         movie_list = Movie.objects.order_by('-duration')
 
-    paginator = Paginator(movie_list, 200)  # Show 200 movies per page
+    paginator = Paginator(movie_list, 250)  # Show 250 movies per page
     page = request.GET.get('page')
     try:
         movie_list = paginator.page(page)

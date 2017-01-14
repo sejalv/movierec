@@ -26,7 +26,7 @@ urlpatterns = [
     # ex: /review/user/5/delete_review - delete reviews for the logged user
     url(r'^review/user/(?P<review_id>[0-9]+)/delete_review/$', views.delete_review, name='delete_review'),
     #ex: /review/user/5/delete_review_conf - delete review confirmation
-    url(r'^review/user/(?P<review_id>[0-9]+)/delete_review_conf/$',TemplateView.as_view(template_name="reviews\delete_review_conf.html"), name='delete_review_conf'),
+    url(r'^review/user/(?P<review_id>[0-9]+)/delete_review_conf/$',views.DelConf.as_view(), name='delete_review_conf'),
     # ex: /recommendation - get movie recommendations for the logged user
     url(r'^recommendation/$', views.user_recommendation_list, name='user_recommendation_list'),
 ]
