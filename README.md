@@ -16,7 +16,7 @@ Other Features:
 - User Management (Login, Registration)
 - KMeans Clustering algorithm (Recommendations feature with Collaborative Filtering)
 - Search Suggestions and Sort By options (Movies)
-- Responsive Layout (Device-compatible)
+- Responsive Layout (Device-compatible web pages)
 - Batch process for updating clusters (/reviews/management/commands/runUpdClusters.py)
                    
 Technologies:
