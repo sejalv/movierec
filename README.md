@@ -3,7 +3,7 @@
 What to expect: This website lets you rate movies and accordingly generates recommendations for you.
 
 How it works:
-\n 1. Login/Register your account through "Sign In"
+/n 1. Login/Register your account through "Sign In"
 - 2. Find a movie from the "Movies" section or use the "Search" feature
 - 3. Add review (rating &/ comment) on a movie page
 - 4. Repeat steps 2 and 3, if needed.
