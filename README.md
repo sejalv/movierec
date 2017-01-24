@@ -7,7 +7,7 @@ How it works:
 <br> 2. Find a movie from the "Movies" section or use the "Search" feature
 <br> 3. Add review (rating &/ comment) on a movie page
 <br> 4. Repeat steps 2 and 3, if needed.
-<br> 5. Hit "Movie Suggestions" on the bar and view your recommendations (Refreshing the page provides a new list everytime).
+<br> 5. Hit "Movie Suggestions" on the bar and view your recommendations (Refreshing the page displays new items, but from the same cluster).
 
 How the Recommendations feature works: It's a Machine Learning algorithm which groups (clusters) you with users who have rated similarly as you.
 
