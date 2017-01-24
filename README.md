@@ -1,10 +1,10 @@
-<h3> Movie Recommendations Website </h3>
+<h3> <a href="https://movierec-sv.herokuapp.com/"> Movie Recommendations Website </a> </h3>
 
 What to expect: It's a Movie Recommendations website, that lets you rate movies and accordingly generates recommendations for you.
 
 How it works:
 1. Login/Register your account through "Sign In"
-2. Find a movie from the "Movies" section or use the "Search" feature 
+2. Find a movie from the "Movies" section or use the "Search" feature
 3. Add review (rating &/ comment) on a movie page
 4. Repeat steps 2 and 3, if needed.
 5. Hit "Movie Suggestions" on the bar and view your recommendations (Refreshing the page provides a new list everytime).
