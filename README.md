@@ -29,3 +29,8 @@ Technologies:
 Dataset (CSV): <a href="https://grouplens.org/datasets/movielens/"> MovieLens (ml-latest-small) </a>
 - 100,000 ratings and 1,300 tag applications applied to 9,000 movies by 700 users. Last updated 10/2016.
 - Files (/data): Users, Movies, Reviews, Genres
+
+
+References:
+- https://www.codementor.io/jadianes/tutorials/get-started-with-django-building-recommendation-review-app-du107yb1a
+- http://www.tutorialrepublic.com/twitter-bootstrap-tutorial
